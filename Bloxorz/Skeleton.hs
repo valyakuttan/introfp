@@ -28,7 +28,7 @@
 --   
 --      x axis
 
-module Skeleton 
+module Bloxorz.Skeleton 
     (
       Block
     , Move

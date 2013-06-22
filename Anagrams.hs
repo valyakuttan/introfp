@@ -18,7 +18,7 @@ type StateMap a b = State (Map.Map a b) b
 
 printAnagrams :: String -> IO ()
 printAnagrams sentence = do
-    s <- readFile "linuxwords.txt"
+    s <- readFile "resources/linuxwords.txt"
     let d = dictionary $ concatMap words $ lines s
     let prints = putStrLn . concat . intersperse " "
     mapM_ prints $ anagramsM d $ words sentence

@@ -2,14 +2,14 @@
 --
 --
 
-module Solver 
+module Bloxorz.Solver 
     (
       position
     , solution
     , startBlock
     ) where
 
-import Skeleton
+import Bloxorz.Skeleton
 
 solution :: Terrain -> Position -> Block -> [Move]
 solution t goal start =

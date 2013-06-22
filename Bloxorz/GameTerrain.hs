@@ -2,13 +2,13 @@
 --
 --
 
-module GameTerrain 
+module Bloxorz.GameTerrain 
     (
       infinite
     , finite
     ) where
 
-import Skeleton (Position (x, y), Terrain, position)
+import Bloxorz.Skeleton (Position (x, y), Terrain, position)
 
 -- Character legend in terrain map
 --

@@ -4,9 +4,9 @@
 
 module Bloxorz where
 
-import GameTerrain
-import Solver
-import Skeleton ( Move )
+import Bloxorz.GameTerrain
+import Bloxorz.Solver
+import Bloxorz.Skeleton ( Move )
 
 level :: [String]
 level = [ "|oooSooooo"
