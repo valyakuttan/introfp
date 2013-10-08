@@ -102,4 +102,3 @@ memoizeM t x = evalState (f x) Map.empty
           put $ Map.insert x y m;
           return y
       f x = get >>= \m -> maybe (g x) return (Map.lookup x m)
-
