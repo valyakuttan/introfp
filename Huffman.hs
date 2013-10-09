@@ -15,16 +15,16 @@ import Data.List (sort, group, sortBy)
 import Data.Ord (comparing)
 import qualified Data.Map as Map
 
-data CodeTree = Fork
-    { left   :: CodeTree
-    , right  :: CodeTree
-    , chars  :: String
-    , weight :: Integer
-    }
-    | Leaf
-    { chars  :: String
-    , weight :: Integer
-    }
+data CodeTree = Fork !CodeTree !CodeTree !String !Integer
+              | Leaf !String !Integer
+
+chars :: CodeTree -> String
+chars (Fork _ _ cs _) = cs
+chars (Leaf cs _)     = cs
+
+weight :: CodeTree -> Integer
+weight (Fork _ _ _ w) = w
+weight (Leaf _ w)     = w
 
 instance Show CodeTree where
     show (Fork l r cs _)
@@ -43,19 +43,16 @@ leaf :: Char -> Integer -> CodeTree
 leaf c w = Leaf [c] w
 
 mkCodeTree :: CodeTree -> CodeTree -> CodeTree
-mkCodeTree l r = Fork l r cs w
-  where
-      cs = chars l ++ chars r
-      w  = weight l + weight r
+mkCodeTree l r = let cs = chars l ++ chars r
+                     w  = weight l + weight r
+                 in Fork l r cs w
 
 leaves :: String -> [CodeTree]
-leaves = map mkLeaf . sortedps . sortedcs
+leaves = map (uncurry leaf) . sortedPairs . group . sort
   where
-      sortedcs     :: String -> [String]
-      sortedcs     =  group . sort
-      ps           =  map $ \cs -> (head cs, toInteger $ length cs)
-      sortedps     =  sortBy (comparing snd) . ps
-      mkLeaf       =  uncurry leaf
+      toPairs :: [String] -> [(Char, Integer)]
+      toPairs =  map $ \cs -> (head cs, toInteger $ length cs)
+      sortedPairs =  sortBy (comparing snd) . toPairs
 
 insCodeTree :: CodeTree -> [CodeTree] -> [CodeTree]
 insCodeTree ct []        = [ct]

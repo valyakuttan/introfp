@@ -62,7 +62,6 @@ combinations ((c, f) : cfs)
       rest        = combinations cfs
       prefixs     = map ((,) c) [1 .. f]
 
--- yf <= xf if yc == xc, where (yc, yf) in y && (xc, xf) in x
 subtract :: Occurrences -> Occurrences -> Occurrences
 subtract x []              = x
 subtract ((xc, xf) : xcfs) y @ ((yc, yf) : ycfs)
@@ -74,23 +73,18 @@ wordAnagrams :: Occurrences -> Dictionary -> Maybe [String]
 wordAnagrams occr d = lookup occr d
 
 occurrences :: [String] -> Occurrences
-occurrences = map  mkoccur . group . sortedList
+occurrences = map f . group . sortedList
   where
-      mkoccur    = combineWith (,) head length
+      f s = (head s, length s)
       sortedList = sort . map toLower . concatMap id
 
 dictionary :: [String] -> Dictionary
 dictionary
-    = map dictEntry . groupBy pairEq . sortBy cmp . map pairs
+    = map dictEntry . groupBy pairEq . sortBy (comparing fst) . map pairs
   where
-      dictEntry l = (fst (l !! 0), map snd l)
-      pairs     = \s -> (occur s, s)
-      cmp       = comparing fst
-      occur     = occurrences . (:[])
+      dictEntry l = (fst . head $ l, map snd l)
+      pairs s = (occurrences [s], s)
       pairEq p1 p2 = fst p1 == fst p2
-
-combineWith :: (a -> b -> c) -> (d -> a) -> (d -> b) -> d -> c
-combineWith f g h x = f (g x) (h x)
 
 memoizeM :: 
     Ord a => ((a -> StateMap a b) -> (a -> StateMap a b)) -> (a -> b)
