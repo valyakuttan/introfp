@@ -8,7 +8,7 @@ module Bloxorz.GameTerrain
     , finite
     ) where
 
-import Bloxorz.Skeleton (Position (x, y), Terrain, position)
+import Bloxorz.Skeleton (Position, Terrain, position, posX, posY)
 
 -- Character legend in terrain map
 --
@@ -37,8 +37,8 @@ stringToTerrain ms = tf
         tf p = validIndex x' ms && validIndex y' (ms!!x') 
              && ms!!x'!!y' /= '-'
           where
-          x' = x p
-          y' = y p
+          x' = posX p
+          y' = posY p
         validIndex i xs   = 0 <= i && i < length xs
 
 stripMargin :: Char -> [String] -> [String]

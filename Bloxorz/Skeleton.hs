@@ -32,18 +32,18 @@ module Bloxorz.Skeleton
     (
       Block
     , Move
-    , Position ( x, y)
+    , Position
     , Terrain
+    , posX
+    , posY
     , done
     , legalNeighbors
     , position
     , startBlock
     ) where
 
-data Position = Position
-    { x :: Int
-    , y :: Int
-    } deriving (Eq, Show)
+data Position = Position !Int !Int
+                deriving (Eq, Show)
 
 type Terrain = Position -> Bool
 
@@ -114,3 +114,10 @@ dy d (Position x y) = position x (y + d)
 
 legal :: Position -> Bool
 legal (Position x y) = x >= 0 && y >= 0
+
+posX :: Position -> Int
+posX (Position x _) = x
+
+posY :: Position -> Int
+posY (Position _ y) = y
+
