@@ -48,11 +48,12 @@ mkCodeTree l r = let cs = chars l ++ chars r
                  in Fork l r cs w
 
 leaves :: String -> [CodeTree]
-leaves = map (uncurry leaf) . sortedPairs . group . sort
+leaves s = let ps     = group $ sort s
+               sps    = sortBy (comparing snd) $ toPairs ps
+           in map (uncurry leaf) sps
   where
       toPairs :: [String] -> [(Char, Integer)]
       toPairs =  map $ \cs -> (head cs, toInteger $ length cs)
-      sortedPairs =  sortBy (comparing snd) . toPairs
 
 insCodeTree :: CodeTree -> [CodeTree] -> [CodeTree]
 insCodeTree ct []        = [ct]
@@ -62,10 +63,9 @@ insCodeTree ct (ct' : cts)
 
 combine :: [CodeTree] -> CodeTree
 combine [ct]              = ct
-combine (ct1 : ct2 : cts) = combine cts'
-  where
-      ct'  = mkCodeTree ct1 ct2
-      cts' = insCodeTree ct' cts
+combine (ct1 : ct2 : cts) = let ct'  = mkCodeTree ct1 ct2
+                                cts' = ct' `seq` insCodeTree ct' cts
+                            in combine $! cts'
 
 codeTree :: String -> CodeTree
 codeTree = combine . leaves

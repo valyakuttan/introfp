@@ -82,7 +82,7 @@ dictionary :: [String] -> Dictionary
 dictionary
     = map dictEntry . groupBy pairEq . sortBy (comparing fst) . map pairs
   where
-      dictEntry l = (fst . head $ l, map snd l)
+      dictEntry l = (fst $ head  l, map snd l)
       pairs s = (occurrences [s], s)
       pairEq p1 p2 = fst p1 == fst p2
 
