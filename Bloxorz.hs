@@ -21,4 +21,3 @@ bloxorz :: [Move]
 bloxorz = solution terrain goal $ startBlock start
   where
       (terrain, start, goal) = finite level
-

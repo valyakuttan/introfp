@@ -120,4 +120,3 @@ posX (Position x _) = x
 
 posY :: Position -> Int
 posY (Position _ y) = y
-
