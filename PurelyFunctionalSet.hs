@@ -14,7 +14,7 @@ module PurelyFunctionalSet
 
 import Prelude hiding (filter, map)
 
-newtype Set a = Set {cf :: a -> Bool}    -- A Set is represented by its
+newtype Set a = Set { cf :: a -> Bool }  -- A Set is represented by its
                                          -- characteristic function.
 
 contains :: Set a -> a -> Bool
