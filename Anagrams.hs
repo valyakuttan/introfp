@@ -1,6 +1,5 @@
 -- Anagrams.hs
 --
---
 {-# LANGUAGE FlexibleContexts, GeneralizedNewtypeDeriving #-}
 
 import Prelude hiding (subtract)
