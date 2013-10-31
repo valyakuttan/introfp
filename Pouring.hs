@@ -4,7 +4,8 @@
 
 import Data.List (union, nub)
 
-data Glass = Glass Int Int deriving (Eq) -- Glass amount capacity
+data Glass = Glass Int Int  -- Glass amount capacity
+             deriving (Eq)
 
 instance Show Glass where
     show (Glass a _) = show a

@@ -42,25 +42,26 @@ anagramsM dict occr = do
     case Map.lookup occr memo of
       Just xs -> return xs
       Nothing -> do
-          bs <- forM (filter (/=[]) $ combinations occr) $ \s ->
+          bs <- forM (filter (/=[]) $ combinations occr) $ \s -> do
                   let pres s = maybe [] id $ wordAnagrams s dict
                       append s ys = (:ys) <$> pres s
-                  in concatMap (append s) <$>
-                     (anagramsM dict $ subtract occr s)
+                  ans <- (anagramsM dict $ subtract occr s)
+                  return $ concatMap (append s) ans
           let as = concat bs
           put $ M $ Map.insert occr as memo
           return as
 
 anagrams :: Dictionary -> Occurrences -> [String]
 anagrams d occr = unwords <$> go occr
-    where          
+    where
+        go []  = [[]]
         go occr =
-            let mkAnagrams s = concatMap (append s) $ suffixes s
-                append s t = (:t) <$> prefixes s
-                prefixes s = maybe [] id $ wordAnagrams s d
-                suffixes s = go $ subtract occr s
-                xs         = filter (/=[]) $ combinations occr
-            in if null occr then [[]] else concatMap mkAnagrams xs
+          let mkAnagrams s = concatMap (append s) $ suffixes s
+              append s t = (:t) <$> prefixes s
+              prefixes s = maybe [] id $ wordAnagrams s d
+              suffixes s = go $ subtract occr s
+          in concatMap mkAnagrams $
+             filter (/=[]) $ combinations occr
 
 combinations :: Occurrences -> [Occurrences]
 combinations []             = [[]]
